@@ -1,0 +1,183 @@
+## Assignment Part-1
+Q1. Why do we call Python as a general purpose and high-level programming language?
+
+   Python is a general purpose language because it is used in various fields like Machine learning,Data Science,Web Development,Data Analysis ,AI and so on.
+   It is a high-level language because it's easy for humans to understand and it is obejct oriented approach.
+  
+Q2. Why is Python called a dynamically typed language?
+    Python called a dynamically typed language because of interpreter does type checking only as code runs, and the type of a variable is allowed to change over its lifetime.
+    
+   
+Q3. List some pros and cons of Python programming language?
+
+Pros	
+   Highly Scalable
+   Flexible and Extensible	
+   Extensive Libraries	
+   Embeddable	
+   Portable
+Cons
+   Slower than compiled languages
+   Security
+   Python’s Memory Consumption and Garbage Collection
+   High memory consumption
+   Python is Dynamically Typed
+
+Q4. In what all domains can we use Python?
+
+   Python can use in various domains
+   Data analysis and visualizations
+   Programming applications
+   AI and machine learning
+   Financial analysis and fintechs
+   Game development
+   
+Q5. What are variable and how can we declare them?
+     In Python, variable is a symbolic name that is a reference or pointer to an object. Once an object is assigned to variable ,we can refer to the object by that name.
+     In Python we don't declare variables, we simply assign them.
+     
+Q6. How can we take an input from the user in Python?
+
+      Using input() function
+
+Q7. What is the default datatype of the value that has been taken as an input using input() function?
+
+     String
+
+Q8. What is type casting?
+
+ Changing one datatype to other data type is casting.
+
+Q9. Can we take more than one input from the user using single input() function? If yes, how? If no, why?
+
+ Using only with input function , No . but using input and split function we can get multiple inputs.
+ 
+ name,age=input("Enter User details of name, age  is: ").split(",",2)
+print("User name is :",name)
+print("User age is :",age)
+
+
+
+Q10. What are keywords?
+     Keywords are some predefined and reserved words in python that have special meanings.
+
+Q11. Can we use keywords as a variable? Support your answer with reason.
+     No. We cannot use keywords as varaibale.
+     Example 
+     if=5
+   print("The value of if is ",if)
+   It throws SyntaxError: invalid syntax  error
+
+
+Q12. What is indentation? What's the use of indentaion in Python?
+Indentation is the leading whitespace (spaces or/and tabs) before any statement in Python. 
+The reason why indentation is important in python is that the indentation serves another purpose other than code readability. 
+Python treats the statements with the same indentation level (statements with an equal number of whitespaces before them) as a single code block.
+
+Q13. How can we throw some output in Python?
+      Using print() function
+      
+Q14. What are operators in Python?
+   Operators are used to perform operations on variables and values. Some of them areArithmetic operators
+   Assignment operators
+    Comparison operators
+   Logical operators
+   Identity operators
+   Membership operators
+  Bitwise operators
+  
+Q15. What is difference between / and // operators?
+
+     /  for float division
+     // for integer divison 
+
+
+Q16. Write a code that gives following as an output.
+```
+iNeuroniNeuroniNeuroniNeuron
+```   print("iNeuroniNeuroniNeuroniNeuron")
+
+Q17. Write a code to take a number as an input from the user and check if the number is odd or even.
+
+    number1=int(input("Please enter the number to test whether ever or odd: "))
+    if (num1%2==0):
+        print("The given number %d is even"%(num1),end="\n")
+    else:    
+        print("The given number %d is odd"%(num1),end="\n")
+        
+Q18. What are boolean operator?
+     Boolean operators are those that take Boolean inputs and return Boolean results.
+     The logical operators and, or and not are also referred to as boolean operators. 
+     While and as well as or operator needs two operands, which may evaluate to true or false, not operator needs one operand evaluating to true or false.
+
+Q19. What will the output of the following?
+
+1 or 0
+output:  1
+0 and 0
+Output:0
+True and False and True
+Output: False
+1 or 0 or 0
+Output: 1
+
+Q20. What are conditional statements in Python?
+
+if.
+if..else.
+Nested if.
+if-elif statements
+
+Q21. What is use of 'if', 'elif' and 'else' keywords?
+
+In a Python program, the if or elif statements are used to perform this sort of decision-making. It allows for conditional execution of a statement or group of statements 
+or group of statements based on the value of an expression. Else statement is  if all the above conditions evalutes to false.
+
+
+Q22. Write a code to take the age of person as an input and if age >= 18 display "I can vote". If age is < 18 display "I can't vote".
+age=int(input("Please enter the age to check voting right: "))
+if (age>=18):
+    print("I can vote")
+else:    
+    print("I can't vote")
+
+
+Q23. Write a code that displays the sum of all the even numbers from the given list.
+
+numbers = [12, 75, 150, 180, 145, 525, 50]
+
+print("The sum of numbers give in the list is : ",sum(numbers))
+
+
+
+
+Q24. Write a code to take 3 numbers as an input from the user and display the greatest no as output.
+
+num1=int(input("Please enter the first number: "))
+num2=int(input("Please enter the second number: "))
+num3=int(input("Please enter the third number: "))
+if (num1>num2) and (num1>num3):
+    print("The greatest of %d,%d,%d is %d "%(num1,num2,num3,num1))
+elif (num2>num3) and (num2>num3):
+    print("The greatest of %d,%d,%d is %d "%(num1,num2,num3,num2))
+else:
+    print("The greatest of %d,%d,%d is %d "%(num1,num2,num3,num3))
+
+
+Q25. Write a program to display only those numbers from a list that satisfy the following conditions
+
+- The number must be divisible by five
+
+- If the number is greater than 150, then skip it and move to the next number
+
+- If the number is greater than 500, then stop the loop
+
+numbers = [12, 75, 150, 180, 145, 525, 50]
+for i in numbers:
+    if((i%5)==0):
+        if(500>i>150 ):
+            continue
+        if(i>500):
+            break
+        
+        print("The number divisible by 5 is ",i)
