@@ -21,6 +21,8 @@ e. In which country sales was maximum and in which country sales was minimum
 f. Calculate quartelry sales for each city
 h. Find a month for each year in which maximum number of quantities were sold
 
+Solution:
+
 create table sales_order_csv(ORDERNUMBER int,QUANTITYORDERED int,PRICEEACH float,ORDERLINENUMBER  int,SALES float,STATUS string,QTR_ID int,MONTH_ID int,YEAR_ID int,PRODUCTLINE string,MSRP int,PRODUCTCODE string,PHONE string,CITY string,STATE string,POSTALCODE string,COUNTRY string,TERRITORY string,CONTACTLASTNAME string,CONTACTFIRSTNAME string,DEALSIZE string) ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' WITH SERDEPROPERTIES( "seperatorchar"=",") STORED AS TEXTFILE tblproperties("skip.header.line.count"="1");
 
 load data local inpath 'file:///config/workspace/sales_data.csv' into table sales_order_csv;
