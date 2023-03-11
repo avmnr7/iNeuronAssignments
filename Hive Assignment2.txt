@@ -1,0 +1,164 @@
+Scenario Based questions:
+
+1)Will the reducer work or not if you use “Limit 1” in any HiveQL query?
+No, since it simply selecting first record .
+
+2)Suppose I have installed Apache Hive on top of my Hadoop cluster using default metastore configuration. Then, what will happen if we have multiple clients trying to access Hive at the same time? 
+
+The default metastore configuration allows only one Hive session to be opened at a time for accessing the metastore. 
+Therefore, if multiple clients try to access the metastore at the same time, they will get an error
+
+3)Suppose, I create a table that contains details of all the transactions done by the customers: CREATE TABLE transaction_details (cust_id INT, amount FLOAT, month STRING, country STRING)
+ ROW FORMAT DELIMITED FIELDS TERMINATED BY ‘,’ ;
+Now, after inserting 50,000 records in this table, I want to know the total revenue generated for each month.
+ But, Hive is taking too much time in processing this query. How will you solve this problem and list the steps that I will be taking in order to do so?
+ We can solve the issue by using below steps
+a)Create a partitioned table, say partitioned_transaction:
+  CREATE TABLE p_transaction (cust_id INT, amount FLOAT, country STRING) PARTITIONED BY (month STRING) ROW FORMAT DELIMITED FIELDS TERMINATED BY ‘,’ ; 
+
+b). Enable dynamic partitioning in Hive:
+
+SET hive.exec.dynamic.partition = true;
+
+SET hive.exec.dynamic.partition.mode = nonstrict;
+
+c). Transfer the data from the non – partitioned table into the newly created partitioned table:
+
+INSERT OVERWRITE TABLE partitioned_transaction PARTITION (month) SELECT cust_id, amount, country, month FROM transaction_details;
+
+
+
+3)How can you add a new partition for the month December in the above partitioned table?
+ALTER TABLE p_transaction add partition (month='Dec') LOCATION '/p_transaction';
+
+4)I am inserting data into a table based on partitions dynamically. But, I received an error – FAILED ERROR IN SEMANTIC ANALYSIS: Dynamic partition strict mode requires at least one static partition column. How will you remove this error?
+
+SET hive.exec.dynamic.partition = true;
+
+SET hive.exec.dynamic.partition.mode = nonstrict;
+
+
+5)Suppose, I have a CSV file – ‘sample.csv’ present in ‘/temp’ directory with the following entries:
+id first_name last_name email gender ip_address
+How will you consume this CSV file into the Hive warehouse using built-in SerDe?
+
+create external table sample (id int, first_name string,last_name string,email string, gender string, ip_address string ) ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+WITH SERDEPROPERTIES (
+   "separatorChar" = ",",
+   "quoteChar"     = "\"",
+   "escapeChar"    = "\\"
+)  
+STORED AS TEXTFILE LOCATION '/temp'
+tblproperties ("skip.header.line.count"="1");
+
+6)Suppose, I have a lot of small CSV files present in the input directory in HDFS and I want to create a single Hive table corresponding to these files. The data in these files are in the format: {id, name, e-mail, country}. Now, as we know, Hadoop performance degrades when we use lots of small files.
+So, how will you solve this problem where we want to create a single Hive table for lots of small files without degrading the performance of the system?
+
+Use SequenceFile format which will group these small files together to form a single sequence file.
+--Create a temporary table
+--Load data into temperorary table
+--Create a table that will store data in SequenceFile format
+--Transfer the data from the temporary table into the sample seqfile table
+A single SequenceFile is generated which contains the data present in all of the input files ,resolves the performance degrade issue. 
+
+
+7)LOAD DATA LOCAL INPATH ‘Home/country/state/’ OVERWRITE INTO TABLE address;
+
+The following statement failed to execute. What can be the cause?
+
+The local inpath should contain file not directory.
+
+8)Is it possible to add 100 nodes when we already have 100 nodes in Hive? If yes, how?
+Yes.
+Step 1: Take a new system; create a new username and password
+Step 2: Install SSH and with the master node setup SSH connections
+Step 3: Add ssh public_rsa id key to the authorized keys file
+Step 4: Add the new DataNode hostname, IP address, and other details in /etc/hosts slaves file:
+
+192.168.1.102 slave3.in slave3
+Step 5: Start the DataNode on a new node
+Step 6: Login to the new node like suhadoop or:
+
+ssh -X hadoop@192.168.1.103
+Step 7: Start HDFS of the newly added slave node by using the following command:
+
+./bin/hadoop-daemon.sh start data node
+Step 8: Check the output of the jps command on the new node
+
+
+Hive Practical questions:
+
+9)Hive Join operations
+
+Create a  table named CUSTOMERS(ID | NAME | AGE | ADDRESS   | SALARY)
+Create a Second  table ORDER(OID | DATE | CUSTOMER_ID | AMOUNT
+)
+
+Now perform different joins operations on top of these tables
+(Inner JOIN, LEFT OUTER JOIN ,RIGHT OUTER JOIN ,FULL OUTER JOIN)
+
+select * from CUTOMERS INNER JOIN ORDER ON ID=CUSTOMER_ID 
+select * from CUTOMERS left outer JOIN ORDER ON ID=CUSTOMER_ID 
+select * from CUTOMERS RIGHT OUTER JOIN ORDER ON ID=CUSTOMER_ID 
+select * from CUTOMERS FULL OUTER JOIN ORDER ON ID=CUSTOMER_ID 
+
+10)BUILD A DATA PIPELINE WITH HIVE
+
+Download a data from the given location - 
+https://archive.ics.uci.edu/ml/machine-learning-databases/00360/
+
+1. Create a hive table as per given schema in your dataset 
+
+create table airquality(datei string,timei string,CO string,PT08S1 int,NMHC int,C6H6 int,PT08S2 int,NOx int,PT08S3 int,NO2 int,PT08S4 int,PT08S5 int,T int,RH int,AH int);
+2. try to place a data into table location
+
+3. Perform a select operation . 
+select * from airquality limit 5;
+4. Fetch the result of the select operation in your local as a csv file . 
+load data local inpath 'file:///config/workspace/AirQualityUCI.csv' into table airquality;
+5. Perform group by operation . 
+select datei,sum(CO) from airquality group by datei;
+7. Perform filter operation at least 5 kinds of filter examples . 
+select * from airquality where datei='10/03/2004'
+select * from airquality where CO=2
+8. show and example of regex operation
+select datei,regexp_extract(datei,'10/03/2004',0) from airquality;
+9. alter table operation 
+ALTER TABLE airquality DROP COLUMN CO ;
+10 . drop table operation
+DROP TABLE airquality;
+12 . order by operation .
+ select * from airquality order by from_unixtime(unix_timestamp(datei , 'MM/dd/yyyy'))
+13 . where clause operations you have to perform . 
+select * from airquality where CO=2
+14 . sorting operation you have to perform . 
+15 . distinct operation you have to perform .
+SELECT DISTINCT datei FROM airquality; 
+16 . like an operation you have to perform . 
+select * from airquality where datei like'%03/2004'
+17 . union operation you have to perform .
+select * from airqulity union select * from airquality; 
+18 . table view operation you have to perform . 
+describe formatted airquality;
+
+
+hive operation with python
+
+11)Create a python application that connects to the Hive database for extracting data, creating sub tables for data processing, drops temporary tables.fetch rows to python itself into a list of tuples and mimic the join or filter operations
+
+pip install 'pyhive[hive]'
+
+from pyhive import hive
+
+cursor = hive.connect('localhost').cursor()
+cursor.execute('SELECT * FROM test_db.test_table')
+print(cursor.fetchone())
+print(cursor.fetchall())
+
+
+
+
+
+
+
+
